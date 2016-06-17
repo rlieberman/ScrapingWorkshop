@@ -34,25 +34,25 @@ print missed_connect_urls
 
 
 
-#PART 2 - now that we have all the urls, let's get the content for each page
-#-----------------------------------------------------------
+# #PART 2 - now that we have all the urls, let's get the content for each page
+# #-----------------------------------------------------------
 
-#go through the same process as we did where we load the HTML of the page
-#do it for each page
+# #go through the same process as we did where we load the HTML of the page
+# #do it for each page
 
-missed_connect_text = [] #create an empty list to hold all of our text
+# missed_connect_text = [] #create an empty list to hold all of our text
 
-for i in range(0,len(missed_connect_urls)):
-  r2 = requests.get(missed_connect_urls[i])
-  time.sleep(.05)
-  # print r2.content
+# for i in range(0,len(missed_connect_urls)):
+#   r2 = requests.get(missed_connect_urls[i])
+#   time.sleep(.05)
+#   # print r2.content
 
-  soup = BeautifulSoup(r2.content)
+#   soup = BeautifulSoup(r2.content)
 
-  postings = soup.find_all("section", id="postingbody")
-  for item in postings: #get the contents, without the tags on either side
-    item = item.contents
-    print item
-    missed_connect_text.append(item)
+#   postings = soup.find_all("section", id="postingbody")
+#   for item in postings: #get the contents, without the tags on either side
+#     item = item.contents
+#     print item
+#     missed_connect_text.append(item)
 
-# print missed_connect_text
+# # print missed_connect_text
