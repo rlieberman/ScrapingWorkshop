@@ -3,15 +3,11 @@ import requests
 import time #so that we can add delays
 from bs4 import BeautifulSoup
 
-
-base_url = "http://newyork.craigslist.org/search/mis"
-missed_connect_urls = []
-
-
 #PART 1 - get all the urls for each missed connection pages
 #-----------------------------------------------------------
 
 #A) use requests to grab the raw data from craigslist
+base_url = "http://newyork.craigslist.org/search/mis"
 r = requests.get(base_url) 
 # print r.content #r.content shows us raw html of page
 
@@ -21,16 +17,18 @@ soup = BeautifulSoup(r.content)
 
 #C) find all a tags with classname hdrlnk
 urls = soup.find_all("a", class_="hdrlnk") 
-# print type(urls)
+# # print type(urls)
 
 #D) get the end of the link that will be each individual page
+missed_connect_urls = []
+
 for item in urls:
   # print item
   link = item.get("href")
-  full_link = "http://newyork.craigslist.org/" + link
+  full_link = "http://newyork.craigslist.org" + link
   missed_connect_urls.append(full_link)
 
-print missed_connect_urls
+# print missed_connect_urls
 
 
 
@@ -40,19 +38,34 @@ print missed_connect_urls
 # #go through the same process as we did where we load the HTML of the page
 # #do it for each page
 
-# missed_connect_text = [] #create an empty list to hold all of our text
+missed_connect_text = [] #create an empty list to hold all of our text
 
-# for i in range(0,len(missed_connect_urls)):
-#   r2 = requests.get(missed_connect_urls[i])
-#   time.sleep(.05)
-#   # print r2.content
+for i in range(0,len(missed_connect_urls)):
+  r2 = requests.get(missed_connect_urls[i])
+  time.sleep(.05)
+  # print r2.content
 
-#   soup = BeautifulSoup(r2.content)
+  soup = BeautifulSoup(r2.content)
 
-#   postings = soup.find_all("section", id="postingbody")
-#   for item in postings: #get the contents, without the tags on either side
-#     item = item.contents
-#     print item
-#     missed_connect_text.append(item)
+  postings = soup.find_all("section", id="postingbody")
 
-# # print missed_connect_text
+  for item in postings: #get the contents, without the tags on either side
+    item = item.contents
+    # print item
+    missed_connect_text.append(item)
+
+print missed_connect_text
+
+for item in missed_connect_text:
+  # type(item)
+  item = item[0]
+  item = item.replace('<br>','')
+  print item
+
+
+
+
+
+
+
+
